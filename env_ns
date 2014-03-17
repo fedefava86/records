@@ -1,0 +1,57 @@
+#!/bin/sh
+#
+# Copyright (c) 2013 Regents of the SIGNET lab, University of Padova.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+# 3. Neither the name of the University of Padova (SIGNET lab) nor the
+#    names of its contributors may be used to endorse or promote products
+#    derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+# TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+# PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# @name_file:   env_ns
+# @author:      Ivano Calabrese, Giovanni Toso
+# @last_update: 2013.07.26
+# --
+# @brief_description: export the env for ns
+
+# Put here the exportsfor ns
+ARCHITECTURE=`uname -m`
+case "${ARCHITECTURE}" in
+    armv7l)
+        #IGEPv2
+        export PATH=/usr/ns2/bin/:${PATH}
+        export LD_LIBRARY_PATH=/usr/ns2/lib:${LD_LIBRARY_PATH}
+        export LD_LIBRARY_PATH=/usr/ns2/DESERT:${LD_LIBRARY_PATH}
+        ;;
+    armv5tejl)
+        #S2C_18/34
+        export PATH=/usr/local/ns/bin/:${PATH}
+        export LD_LIBRARY_PATH=/usr/local/ns/lib:${LD_LIBRARY_PATH}
+        ;;
+    x86_64)
+        export PATH=/path/to/ns/bin/folder/:${PATH}
+        export LD_LIBRARY_PATH=/path/to/ns/lib/folder/:${LD_LIBRARY_PATH}
+        ;;
+     *)
+     echo "noMatch!"
+esac
+
