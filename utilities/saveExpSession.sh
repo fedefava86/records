@@ -28,12 +28,10 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # @name_file:   saveExpSession.sh
-# @author:      
-# @last_update: 
+# @author:      Ivano Calabrese, Giovanni Toso
+# @last_update: 2014.03.25
 # --
-# @brief_description: 
-#                     
-#                     
+# @brief_description: utility script for the analyzer
 
 if ! test $# = 2; then
     echo "$0 <device_name> <Experiment_Session_label>"

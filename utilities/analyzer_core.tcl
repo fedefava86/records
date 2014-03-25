@@ -27,11 +27,11 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# @name_file:   
-# @author:      
-# @last_update: 
+# @name_file:   analyzer_core.tcl
+# @author:      Ivano Calabrese, Giovanni Toso
+# @last_update: 2014.03.25
 # --
-# @brief_description: 
+# @brief_description: analyzer core module
 #
 # the next line restarts using tclsh \
 exec expect -f "$0" -- "$@"

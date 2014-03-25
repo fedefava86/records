@@ -28,12 +28,10 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # @name_file:   analyzer_init.sh
-# @author:      
-# @last_update: 
+# @author:      Ivano Calabrese, Giovanni Toso
+# @last_update: 2014.03.25
 # --
-# @brief_description: 
-#                     
-#                     
+# @brief_description: analyzer init module
 
 cd `dirname "$0"`
 DEV_ROOT="$(pwd)/../../../"

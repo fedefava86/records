@@ -1,8 +1,35 @@
-% @name_file:   analyze_stat.sh
+% Copyright (c) 2014 Regents of the SIGNET lab, University of Padova.
+% All rights reserved.
+%
+% Redistribution and use in source and binary forms, with or without
+% modification, are permitted provided that the following conditions
+% are met:
+% 1. Redistributions of source code must retain the above copyright
+%    notice, this list of conditions and the following disclaimer.
+% 2. Redistributions in binary form must reproduce the above copyright
+%    notice, this list of conditions and the following disclaimer in the
+%    documentation and/or other materials provided with the distribution.
+% 3. Neither the name of the University of Padova (SIGNET lab) nor the
+%    names of its contributors may be used to endorse or promote products
+%    derived from this software without specific prior written permission.
+#
+% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+% TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+% PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+% CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+% EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+% PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+% OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+% WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+% OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+% ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+%
+% @name_file:   profiler_plot.m
 % @author:      Giovanni Toso
-% @last_update: 2014.02.24
+% @last_update: 2014.03.25
 % --
-% @brief_description: process the stat file and create plots
+% @brief_description: Matlab script used to process the profiler files
 
 %% Reset the workspace
 
@@ -15,8 +42,8 @@ format long g;
 
 SECONDS_MEAN = 60;
 SMOOTH_FACTOR = 5;
-BASE_FOLDER = '/home/giovanni/underwater/papers2c/log_files/';
-FOLDER_NAME = 'gumstix_high traffic/';
+BASE_FOLDER = '/home/rser/folder/';
+FOLDER_NAME = 'experiment_1';
 DESTINATION_FOLDER = [BASE_FOLDER FOLDER_NAME];
 NUM_SAMPLES = 60; % stop the x axis after n samples.
 SAMPLING_PERIOD = 1; % in seconds;
@@ -100,10 +127,10 @@ clear tmp_min_start;
 %% Mean and smooth Data %%
 
 for i = 1 : size(USR, 1)
-    if ((i) * 60 + 1 <= size(USR, 1))
-        tmp_vector = USR(((i - 1) * 60 + 1):((i) * 60 + 1), 2);
+    if ((i) * SECONDS_MEAN + 1 <= size(USR, 1))
+        tmp_vector = USR(((i - 1) * SECONDS_MEAN + 1):((i) * SECONDS_MEAN + 1), 2);
         USR_mean(i, 1) = mean(tmp_vector);
-        tmp_vector = USR(((i - 1) * 60 + 1):((i) * 60 + 1), 3);
+        tmp_vector = USR(((i - 1) * SECONDS_MEAN + 1):((i) * SECONDS_MEAN + 1), 3);
         USR_mean(i, 2) = mean(tmp_vector);
     end
 end
@@ -289,3 +316,4 @@ close all;
 clear legh;
 clear fsize;
 clear lfsize;
+
