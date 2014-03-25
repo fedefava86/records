@@ -6,13 +6,13 @@ RECORDS (Remote Control Framework for Underwater Network) is an open source fram
 How to use it
 =============
 
-1. git clone git@github.com:uwsignet/records.git
-2. open a first terminal and
-    * cd records
-    * ./boot.sh 9201 9200 12701 folder1 [--no-check-port|--check-port]
+1. `git clone git@github.com:uwsignet/records.git`
+2. open a terminal and
+`cd records`
+`./boot.sh 192.168.100.201 9201 9200 12701 folder1 [--no-check-port|--check-port]`
 3. open another terminal and
-    * rlwrap nc 127.0.0.1 12703
-    * type HELP
+`rlwrap nc 127.0.0.1 12703`
+type `HELP`
 
 System requirements
 ===================
