@@ -285,7 +285,15 @@ proc multipath {} {
         #---
         # Open the file
 
-        set fp        [open "${modIdPath}/multipath.log" r]
+        if {[catch {open ${modIdPath}/multipath.log "r"} res] != 0} {
+            send_upsockUser "    0 packets has been processed. \n"
+            send_upsockUser "        - Error opening multipath.log.\n"
+            send_upsockUser "        - Details: maybe non-existent file. Skip to next modem ...\n"
+            send_upsockUser "    -----------------------------------------------------------------------------------\n"
+            continue
+        }
+        set fp ${res}
+        #set fp        [open "${modIdPath}/multipath.log" r]
         set file_data [read ${fp}]
         # Scan all the lines
         set data      [split ${file_data} "\n"]
@@ -332,7 +340,7 @@ proc multipath {} {
             }
         }
         #--------------------------------------
-        send_upsockUser "\n"
+        #send_upsockUser "\n"
         close ${fp}
         close ${fpdat}
         send_upsockUser " ${_pkpc} packets has been processed. \n"
@@ -529,7 +537,7 @@ proc lmodem {} {
             #for {set id4mod 0} {$id4mod < [llength [lindex ${ID_LIST} ${idList_index}]]} {incr id4mod}
             for {set id4mod 0} {$id4mod < [llength [lindex ${ID_LIST} [expr ${modIndex} - 1]]]} {incr id4mod} {
                 #send_upsockUser "id4mod: $id4mod\n"
-                send_upsockUser "  \[[clock format [expr {[lindex [lindex ${ID_LIST_TS} [expr ${modIndex} - 1 ]] ${id4mod}] / 1000000}]] -format {%Y-%m-%d %H:%M:%S}]\]"
+                send_upsockUser "  \[[clock format [expr {[lindex [lindex ${ID_LIST_TS} [expr ${modIndex} - 1 ]] ${id4mod}] / 1000000}] -format {%Y-%m-%d %H:%M:%S}]\]"
                 send_upsockUser "\t[lindex [lindex ${ID_LIST} [expr ${modIndex} - 1]] ${id4mod}]\n"
             }
     send_upsockUser "\n"    
