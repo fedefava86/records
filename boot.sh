@@ -390,7 +390,7 @@ LOG_FILE="boot_${ID}"
 
 # Start the framework
 echo "> the control framework for the acustic-modem is running in:"
-echo "  $(pwd)/${ID}"
+echo "  $(pwd)"
 log "> the control framework is running in: [REALTEST mode]"
 log "${SCRIPT_FILE_NAME} $@"
 
