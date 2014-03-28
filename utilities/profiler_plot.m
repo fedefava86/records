@@ -26,8 +26,8 @@
 % ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %
 % @name_file:   profiler_plot.m
-% @author:      Giovanni Toso
-% @last_update: 2014.03.25
+% @author:      Ivano Calabrese, Giovanni Toso
+% @last_update: 2014.03.28
 % --
 % @brief_description: Matlab script used to process the profiler files
 

@@ -29,7 +29,7 @@
 
 # @name_file:   profiler_pre_processing.sh
 # @author:      Ivano Calabrese, Giovanni Toso
-# @last_update: 2014.03.25
+# @last_update: 2014.03.28
 # --
 # @brief_description: clean the log files made by the PROFILER to be processed in Matlab.
 #                     Execute this script before running other tasks.

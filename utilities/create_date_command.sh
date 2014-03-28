@@ -1,5 +1,5 @@
 #!/bin/sh
-#
+
 # Copyright (c) 2014 Regents of the SIGNET lab, University of Padova.
 # All rights reserved.
 #
@@ -27,21 +27,16 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# @name_file:   USR_proc.tcl
+# @name_file:   create_date_command.sh
 # @author:      Ivano Calabrese, Giovanni Toso
 # @last_update: 2014.03.28
 # --
-# @brief_description: Procedure file for the user module
-#
-# The next line restarts using tclsh \
-exec expect -f "$0" -- "$@"
+# @brief_description: this script formats a command that can be sent to through the control
+#                     frameowrk to set the date.
 
-proc sched_send {} {
-    global opt
 
-    set random_command "SEND,F,255,2,RANDOM_STRING"
-    log_string [s2c_clock] ${opt(module_name)} "SENDDN" "${random_command}\n"
-    send -i ${opt(connection_down)} -- "${random_command}\n"
-    after ${opt(sleep_stress_test)} sched_send
-}
+#hwclock -w
+
+echo "SYSTEM 1 date -s $(date +'%y%m%d%H%M.%S')"
+echo "date $(date +'%m%d%H%M%Y.%S')"
 

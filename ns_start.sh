@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2013 Regents of the SIGNET lab, University of Padova.
+# Copyright (c) 2014 Regents of the SIGNET lab, University of Padova.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
 
 # @name_file:   ns_start.sh
 # @author:      Ivano Calabrese, Giovanni Toso
-# @last_update: 2014.02.27
+# @last_update: 2014.03.28
 # --
 # @brief_description: this script manage the execution of ns and ns-dumb
 

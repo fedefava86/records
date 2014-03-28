@@ -29,7 +29,7 @@
 
 # @name_file:   profiler.sh
 # @author:      Ivano Calabrese, Giovanni Toso
-# @last_update: 2014.02.20
+# @last_update: 2014.03.28
 # --
 # @brief_description: this script manage the execution of ns
 

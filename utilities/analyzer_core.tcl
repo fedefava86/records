@@ -29,7 +29,7 @@
 
 # @name_file:   analyzer_core.tcl
 # @author:      Ivano Calabrese, Giovanni Toso
-# @last_update: 2014.03.25
+# @last_update: 2014.03.28
 # --
 # @brief_description: analyzer core module
 #
