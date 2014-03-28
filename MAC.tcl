@@ -27,7 +27,7 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# @name_file:   ctrl_MAC.tcl
+# @name_file:   MAC.tcl
 # @author:      Ivano Calabrese, Giovanni Toso
 # @last_update: 2013.07.10
 # --
@@ -214,7 +214,7 @@ proc main_loop { } {
                             #logMac ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
                             log_string ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
                         #------------------------------------------------------------------------------
-                        after [expr int([expr ${sleepValue} * 1000])] after_send_down "$expect_out(1,string)"
+                        after [expr int([expr ${sleepValue} * 1000])] after_send_down [list ${expect_out(1,string)}]
                     } else {
                     send -i ${opt(connection_down)} -- "$expect_out(1,string)\n"
                     #- COMMON_LOG -----------------------------------------------------------------

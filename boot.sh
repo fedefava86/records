@@ -29,11 +29,10 @@
 
 # @name_file:   boot.sh
 # @author:      Ivano Calabrese, Giovanni Toso
-# @last_update: 2014.02.11
+# @last_update: 2014.03.28
 # --
-# @brief_description: this script starts the simulation framework and checks if all
-#                     module (APP,NET,MAC, NSC) are running. When some module fall down
-#                     the START_Framework.sh script restores whole control framework.
+# @brief_description: this script starts the simulation framework and acts as a watchdog:
+#   it checks if the modules are running. If some of the crashes, it reset the framework.
 
 RECORDS_ROOT=$(pwd)
 
@@ -301,6 +300,9 @@ FILES_TO_CP="\
              NSC.tcl         \
              NSC_config.tcl  \
              NSC_proc.tcl    \
+             NSD.tcl         \
+             NSD_config.tcl  \
+             NSD_proc.tcl    \
              APP.tcl         \
              APP_config.tcl  \
              APP_proc.tcl    \

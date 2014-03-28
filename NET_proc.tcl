@@ -91,6 +91,91 @@ proc logNet {input_timestamp input_module input_direction input_string} {
     }
 }
 
+
+proc forge_sendim {raw_msg} {
+    global net opt modem
+    set net(my_sn) [expr ${net(my_sn)} + 1]
+    set net(sn_ID${modem(id)}) ${net(my_sn)}
+
+    regexp {(AT\*SENDIM,(\d+),(\d+),(ack|noack),(F|S),(.*))$} $raw_msg -> \
+        sendim_msg          \
+        sendim_length       \
+        sendim_dst          \
+        sendim_ack          \
+        sendim_protocol     \
+        sendim_payload
+
+    if {![info exists sendim_protocol]} {
+        return ${raw_msg}
+    }
+
+    if {[string compare ${sendim_protocol} "F"] == 0} {
+        return ${raw_msg}
+    } elseif {[string compare ${sendim_protocol} "S"] == 0} {
+        regexp {(\d+),(\d+),((\d\ ?)+)?,(\d+),((\d\ ?)+),(.*)$} ${sendim_payload} -> \
+            static_p(sendim_src)         \
+            static_p(sendim_sn)          \
+            static_p(sendim_dst_list)    \
+            ->                           \
+            static_p(sendim_routePath_l) \
+            static_p(sendim_routePath)   \
+            ->                           \
+            static_p(send_command)
+
+        if {![info exists static_p(sendim_src)] && ![info exists static_p(sendim_routePath)] && ![info exists static_p(sendim_dst_list)]} {
+            #- NET_LOG --------------------------------------------------------------------
+                set log(timestamp) [s2c_clock]
+                set log(direction) "|-----"
+                set log(msg) "ERROR: static_p(sendim_src) && static_p(sendim_routePath) && static_p(sendim_dst_list) don't exist\n"
+                #logNet ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
+                log_string ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
+            #------------------------------------------------------------------------------
+            return ${raw_msg}
+        }
+
+        if {[llength ${static_p(sendim_routePath)}] < 1} {
+            #- NET_LOG --------------------------------------------------------------------
+                set log(timestamp) [s2c_clock]
+                set log(direction) "|-----"
+                set log(msg) "ERROR: the ROUTE PATH length is 0. MSG_NOTSENT\n"
+                #logNet ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
+                log_string ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
+            #------------------------------------------------------------------------------
+            #send -i ${opt(connection_up)} -- "WARNING! the ROUTE PATH isn't setted!!!\r\n"
+            #- COMMON_LOG -----------------------------------------------------------------
+                set log(timestamp) [s2c_clock]
+                set log(direction) "DROP--"
+                set log(msg) "ROUTE_PATH_MSG is NULL, MSG_DROPPED\r\n"
+                log_string ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
+            #------------------------------------------------------------------------------
+            return -1
+        }
+
+        if {[string compare ${net(forwardWithDst)} "ON"] == 0 && [llength ${static_p(sendim_dst_list)}] < 1} {
+            #- NET_LOG --------------------------------------------------------------------
+                set log(timestamp) [s2c_clock]
+                set log(direction) "|-----"
+                set log(msg) "the length of the destinations list is: [llength ${static_p(sendim_dst_list)}]. MSG_NOTFORWARDED\n"
+                #logNet ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
+                log_string ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
+                set log(msg) "the net(forwardWithDst) variable is set to: ${net(forwardWithDst)}. MSG_NOTFORWARDED\n"
+                #logNet ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
+                log_string ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
+            #------------------------------------------------------------------------------
+            return -1
+        }
+
+        set static_p(sendim_ack)       ${sendim_ack}
+        set static_p(sendim_dst)       [lindex ${static_p(sendim_routePath)} 0]
+        set static_p(sendim_data)      "S,${static_p(sendim_src)},${static_p(sendim_sn)},${static_p(sendim_dst_list)},${static_p(sendim_routePath_l)},${static_p(sendim_routePath)},${static_p(send_command)}"
+        set static_p(sendim_length)    [string length ${static_p(sendim_data)}]
+        set static_p(sendim_msg)       "AT*SENDIM,${static_p(sendim_length)},${static_p(sendim_dst)},${static_p(sendim_ack)},${static_p(sendim_data)}"
+        return ${static_p(sendim_msg)}
+    } else {
+        return ${raw_msg}
+    }
+}
+
 proc forward_flooding_sendim {in_msg} {
     global net
     global flooding_p opt modem

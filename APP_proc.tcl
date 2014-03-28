@@ -263,6 +263,7 @@ proc forge_sendim {raw_msg} {
     set opt(sendim_counter) [expr ${opt(sendim_counter)} + 1]
     update_sendim_counter_file ${opt(sendim_counter)}
     set sendim_ack          ${opt(ack_mode)}
+    # Note: the ACK are sent always with the Flooding, the sendim_dst must be broadcast.
     set sendim_dst          "255"
     set sendim_length       [string length ${sendim_data}]
     if {[string compare ${input_protocol} "F"] == 0} {
@@ -715,6 +716,8 @@ proc command_manager {input_command recvim_payload} {
             |      kill all the instances of ns RUNNING in the node              |\n\
             | NS ID PARAMS                                                       |\n\
             |      start an ns instance with id ID and parameters PARAMS         |\n\
+            | NS NSD ID PERIOD DESTINATION SIZE                                  |\n\
+            |      start the NSD module                                          |\n\
             | PERSET ID PER ...                                                  |\n\
             |      set a per value in the NSC module.                            |\n\
             |      If the id the node already exists, this command overwrites    |\n\

@@ -172,7 +172,6 @@ proc main_loop {} {
                                         send_up "${opt(module_name)}: created ${sendim_to_send}\n"
                                         sleep ${opt(sleep_before_answer)}
                                         send_down "${sendim_to_send}\n"
-
                                     } else {
                                         debug_app "Error during the creation of an instant message: msg too long or fields not initialized\n"
                                         send_up "${opt(module_name)}: Error during the creation of an instant message: msg too long of fields not initialized\n"

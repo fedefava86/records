@@ -49,3 +49,5 @@ set opt(interactive_mode)     "" ;# 0
 set opt(stress_test)          "" ;# 0
 set opt(sleep_stress_test)    5000
 
+set log(file_name)                 "S2C_${opt(module_name)}.log"
+

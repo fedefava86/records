@@ -27,34 +27,30 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# @name_file:   NET_config.tcl
+# @name_file:   NSD_config.tcl
 # @author:      Ivano Calabrese, Giovanni Toso
-# @last_update: 2013.07.10
+# @last_update: 2014.02.27
 # --
-# @brief_description: Configuration file for the NET module
+# @brief_description: Configuration file for the NS-Dumb module
 #
 # the next line restarts using tclsh \
 exec expect -f "$0" -- "$@"
 
+set down(ip)                       "" ;# 127.0.0.1
+set down(port)                     "" ;# 9201
+set up(appip)                      "" ;# 127.0.0.1
+set up(appport)                    "" ;# 12704
+set up(nsip)                       "" ;# 127.0.0.1
+set up(nsport)                     "" ;# 12705
+
 # Global variables
-set opt(debug)                1
-set opt(user_interaction)     0
-set opt(module_name)          "NET"
-set opt(connection_up)        ""
-set opt(connection_down)      ""
+set opt(verbose)                   1
+set opt(module_name)               "NSD"
+set opt(connection_down)           ""
+set opt(connection_up_ns)          ""
+set opt(connection_up_app)         ""
+set opt(up_connected)              ""
+set opt(payload_max_size)           "64"
 
-set modem(id)                 ""
+set log(file_name)                 "S2C_${opt(module_name)}.log"
 
-# Input and Output configuration
-set up(ip)                    "" ;# 127.0.0.1
-set up(port)                  "" ;# 12702
-set down(ip)                  "" ;# 127.0.0.1
-set down(port)                "" ;# 12701
-
-set net(my_sn)                0
-set net(src_sn)               ""
-set net(sendUPmsg)            0
-
-set net(forwardWithDst)       1
-
-set log(file_name)            "S2C_${opt(module_name)}.log"

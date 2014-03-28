@@ -27,7 +27,7 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# @name_file:   ctrl_NET.tcl
+# @name_file:   NET.tcl
 # @author:      Ivano Calabrese, Giovanni Toso
 # @last_update: 2013.09.03
 # --
@@ -157,13 +157,16 @@ proc main_loop { } {
                         #logNet ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
                         log_string ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
                     #------------------------------------------------------------------------------
-                    send -i ${opt(connection_down)} -- "$expect_out(1,string)\n"
-                    #- COMMON_LOG -----------------------------------------------------------------
-                        set log(timestamp) [s2c_clock]
-                        set log(direction) "SENDDN"
-                        set log(msg) "$expect_out(1,string)\n"
-                        log_string ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
-                    #------------------------------------------------------------------------------
+                    set tmpMsg [forge_sendim $expect_out(1,string)]
+                    if {${tmpMsg} != -1} {
+                        send -i ${opt(connection_down)} -- "$tmpMsg\n"
+                        #- COMMON_LOG -----------------------------------------------------------------
+                            set log(timestamp) [s2c_clock]
+                            set log(direction) "SENDDN"
+                            set log(msg) "${tmpMsg}\n"
+                            log_string ${log(timestamp)} ${opt(module_name)} ${log(direction)} ${log(msg)}
+                        #------------------------------------------------------------------------------
+                    }
                 }
                 {^AT.*$} {
                     #- NET_LOG --------------------------------------------------------------------

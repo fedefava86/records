@@ -70,3 +70,5 @@ set map_ns_id()                    ""
 set modem(id)                      ""
 set modem(powerlevel)              ""
 
+set log(file_name)                 "S2C_${opt(module_name)}.log"
+

@@ -27,7 +27,7 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# @name_file:   APP_proc.tcl
+# @name_file:   NSC_proc.tcl
 # @author:      Ivano Calabrese, Giovanni Toso
 # @last_update: 2013.07.10
 # --

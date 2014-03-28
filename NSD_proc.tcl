@@ -27,34 +27,39 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# @name_file:   NET_config.tcl
+# @name_file:   NSD_proc.tcl
 # @author:      Ivano Calabrese, Giovanni Toso
-# @last_update: 2013.07.10
+# @last_update: 2014.02.27
 # --
-# @brief_description: Configuration file for the NET module
+# @brief_description: Procedure file for the ns-dumb module
+# @acknowledgement: stwo@users.sourceforge.net for the rand_str procedure
 #
-# the next line restarts using tclsh \
+# The next line restarts using tclsh \
 exec expect -f "$0" -- "$@"
 
-# Global variables
-set opt(debug)                1
-set opt(user_interaction)     0
-set opt(module_name)          "NET"
-set opt(connection_up)        ""
-set opt(connection_down)      ""
+proc sched_send {} {
+    global opt
 
-set modem(id)                 ""
+    set random_command "${opt(random_command_header)}[rand_str ${opt(payload_size)}]"
+    log_string [s2c_clock] ${opt(module_name)} "SENDDN" "${random_command}\n"
+    send -i ${opt(connection_down)} -- "${random_command}\n"
+    after ${opt(send_period)} sched_send
+}
 
-# Input and Output configuration
-set up(ip)                    "" ;# 127.0.0.1
-set up(port)                  "" ;# 12702
-set down(ip)                  "" ;# 127.0.0.1
-set down(port)                "" ;# 12701
+proc rand_str {len} {
+    return [subst [string repeat {[format %c [expr {int(rand() * 26) + (int(rand() * 10) > 5 ? 97 : 65)}]]} ${len}]]
+}
 
-set net(my_sn)                0
-set net(src_sn)               ""
-set net(sendUPmsg)            0
+proc log_nsd {msg} {
+    global opt
 
-set net(forwardWithDst)       1
+    if {${opt(verbose)}} {
+        puts -nonewline stdout "* ${msg}"
+    }
+}
 
-set log(file_name)            "S2C_${opt(module_name)}.log"
+proc debug_nsd {msg} {
+    global opt
+
+    log_string [s2c_clock] ${opt(module_name)} "|-----" "${msg}"
+}

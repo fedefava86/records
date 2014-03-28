@@ -58,3 +58,4 @@ set mac(lastSN)               ""
 
 set mac(randomRange)          1
 
+set log(file_name)            "S2C_${opt(module_name)}.log"

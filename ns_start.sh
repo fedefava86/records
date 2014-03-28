@@ -29,9 +29,9 @@
 
 # @name_file:   ns_start.sh
 # @author:      Ivano Calabrese, Giovanni Toso
-# @last_update: 2013.07.28
+# @last_update: 2014.02.27
 # --
-# @brief_description: this script manage the execution of ns
+# @brief_description: this script manage the execution of ns and ns-dumb
 
 # Variables
 STDOUTLOG="ns.out"
@@ -57,18 +57,23 @@ fi
 
 SIMID=$1
 TCLFILENAME=$2
-if [ "${TCLFILENAME}" = "F" ]; then
-    TCLFILENAME="ufetch.tcl"
-elif [ "${TCLFILENAME}" = "M" ]; then
-    TCLFILENAME="msun.tcl"
-elif [ "${TCLFILENAME}" = "P" ]; then
-    TCLFILENAME="uwpolling.tcl"
-elif [ "${TCLFILENAME}" = "D" ]; then
-    TCLFILENAME="dflood.tcl"
-else
-    echo "Unsupported protocol $2. Exiting.tcl ..." >>${STDERRLOG}
-    exit 1
-fi
+case ${TCLFILENAME} in
+    "F")
+        TCLFILENAME="ufetch.tcl"
+        ;;
+    "M")
+        TCLFILENAME="msun.tcl"
+        ;;
+    "P")
+        TCLFILENAME="uwpolling.tcl"
+        ;;
+    "NSD")
+        TCLFILENAME="NSD.tcl"
+        ;;
+    *)
+        echo "Unsupported protocol $2. Exiting.tcl ..." >>${STDERRLOG}
+        exit 1
+esac
 
 NODEID=$3
 shift
@@ -83,16 +88,30 @@ fi
 
 # create the folder
 mkdir ${SIMID}
-cp -fr ${TCLEXPERIMENTS}/* ${SIMID}
-cd ${SIMID}
-find . -name "*.tcl" -exec chmod +x {} \;
-find . -name "*.sh" -exec chmod +x {} \;
-cd - > /dev/null
 
-# Start the simulation
-cd ${SIMID}
-echo "------------------------------------------------" >> ${STDOUTLOG}
-echo "$(date +"%s")    Starting: ns ${TCLFILENAME} ${SIMID} ${NODEID} ${NSPARAMS}" >> ${STDOUTLOG}
-exec ns ${TCLFILENAME} ${SIMID} ${NODEID} ${NSPARAMS} 2>>${STDERRLOG} >>${STDOUTLOG}
-#exec ns
-cd - > /dev/null
+if [ "${TCLFILENAME}" == "NSD.tcl" ]; then
+    cd ${SIMID}
+    echo "------------------------------------------------" >> ${STDOUTLOG}
+    echo "$(date +"%s")    Starting: NSD ${TCLFILENAME} ${SIMID} ${NODEID} ${NSPARAMS}" >> ${STDOUTLOG}
+    cd - > /dev/null
+
+    if [ "$#" -lt 8 ]; then
+        exec ./NSD.tcl localhost 12705 ${NSPARAMS} 2>>${STDERRLOG} >>${STDOUTLOG}
+    else
+        exec ./NSD.tcl ${NSPARAMS} 2>>${STDERRLOG} >>${STDOUTLOG}
+    fi
+else
+    cp -fr ${TCLEXPERIMENTS}/* ${SIMID}
+    cd ${SIMID}
+    find . -name "*.tcl" -exec chmod +x {} \;
+    find . -name "*.sh" -exec chmod +x {} \;
+    cd - > /dev/null
+
+    # Start the simulation
+    cd ${SIMID}
+    echo "------------------------------------------------" >> ${STDOUTLOG}
+    echo "$(date +"%s")    Starting: ns ${TCLFILENAME} ${SIMID} ${NODEID} ${NSPARAMS}" >> ${STDOUTLOG}
+    exec ns ${TCLFILENAME} ${SIMID} ${NODEID} ${NSPARAMS} 2>>${STDERRLOG} >>${STDOUTLOG}
+    cd - > /dev/null
+fi
+

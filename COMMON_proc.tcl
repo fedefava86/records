@@ -38,13 +38,13 @@ exec expect -f "$0" -- "$@"
 
 set log(write_period)      "500" ;# in ms
 set log(write_scheduled)   "0"
-set log(file_name)         "S2C.log"
+#set log(file_name)         ""
 set log(list_to_log)       {}
 
 proc s2c_clock {} {
 
-    if {[catch [clock microseconds] res] != 0} {
-        if {[catch [clock milliseconds] res] != 0} {
+    if {[catch {clock microseconds} res] != 0} {
+        if {[catch {clock milliseconds} res] != 0} {
             return [expr [clock milliseconds] * 1000]
         } else {
             return [expr [clock seconds] * 1000000]

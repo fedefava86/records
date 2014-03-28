@@ -31,7 +31,7 @@
 # @author:      Ivano Calabrese, Giovanni Toso
 # @last_update: 2013.07.10
 # --
-# @brief_description: Application module
+# @brief_description: NS-control module
 #
 # the next line restarts using tclsh \
 exec expect -f "$0" -- "$@"
